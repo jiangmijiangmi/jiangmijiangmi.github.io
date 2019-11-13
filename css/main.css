@@ -767,14 +767,14 @@ a.category-link {
   background: #966f33;
 }
 .endless-river {
-  --theme-color: #43cea2;
-  background: #43cea2;
+  --theme-color: #ffc1c1;
+  background: #ffc1c1;
 /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #185a9d, #43cea2);
+  background: -webkit-linear-gradient(to right, #ffb6c1, #ffc1c1);
 /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #185a9d, #43cea2);
+  background: linear-gradient(to right, #ffb6c1, #ffc1c1);
 /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  --theme-color: linear-gradient(to right, #185a9d, #43cea2);
+  --theme-color: linear-gradient(to right, #ffb6c1, #ffc1c1);
 }
 .crazy-orange {
   --theme-color: #d38312;
@@ -787,14 +787,14 @@ a.category-link {
   --theme-color: linear-gradient(to right, #a83279, #d38312);
 }
 .between-clouds {
-  --theme-color: #73c8a9;
-  background: #73c8a9;
+  --theme-color: #ffc1c1;
+  background: #ffc1c1;
 /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #373b44, #73c8a9);
+  background: -webkit-linear-gradient(to right, #ffb6c1, #ffc1c1);
 /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #373b44, #73c8a9);
+  background: linear-gradient(to right, #ffb6c1, #ffc1c1);
 /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  --theme-color: linear-gradient(to right, #373b44, #73c8a9);
+  --theme-color: linear-gradient(to right, #ffb6c1, #ffc1c1);
 }
 .amethyst {
   --theme-color: #9d50bb;
