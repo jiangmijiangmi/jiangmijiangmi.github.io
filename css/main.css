@@ -1275,3 +1275,181 @@ blockquote div {
 .MathJax_SVG_Display {
   overflow: auto;
 }
+.door-cont {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.door-cont .door-left {
+  transition: transform 1.5s;
+  transform: rotateY(0deg);
+  transform-origin: left;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,0.85);
+  height: 100%;
+  width: 50%;
+  z-index: -1;
+}
+.door-cont .door-right {
+  transition: transform 1.5s;
+  transform: rotateY(0deg);
+  transform-origin: right;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: rgba(0,0,0,0.85);
+  height: 100%;
+  width: 50%;
+  text-align: center;
+  vertical-align: middle;
+  z-index: -1;
+}
+.door-cont.opened .door-right {
+  transform: rotateY(90deg);
+}
+.door-cont.opened {
+  pointer-events: none;
+}
+.door-cont.hide {
+  display: none;
+}
+.door-cont.opened .door-left {
+  transform: rotateY(90deg);
+}
+/* 定义keyframe动画，命名为blink */
+/* 添加兼容性前缀 */
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-moz-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-ms-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.door-cont.opened .door-key {
+  display: none;
+}
+.door-cont .door-key {
+  font-size: 2rem;
+  color: #fff;
+  margin: auto;
+  animation: blink 1s linear infinite;
+/* 其它浏览器兼容性前缀 */
+  -webkit-animation: blink 1s linear infinite;
+  -moz-animation: blink 1s linear infinite;
+  -ms-animation: blink 1s linear infinite;
+  -o-animation: blink 1s linear infinite;
+}
+@-moz-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  50.01% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -42,6 +42,46 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
 </head>
 <body>
+
+<div id='hexoDoor' class='door-cont hide' onclick="openDoor();">
+    <div class='door-left'></div>
+    <div class='door-right'></div>
+    <span class='door-key'>PUSH START</span>
+</div>
+<script>
+    (function () {
+        var params = location.search.slice(1).split('=');
+        var paramsObj = {};
+        for (var idx = 0; idx < params.length; idx += 2) {
+            paramsObj[params[idx]] = params[idx + 1];
+        }
+        function openDoor() {
+            var ts = new Date().getTime();
+            localStorage.setItem('hexo_door_open_time', ts);
+            var el = document.getElementById('hexoDoor');
+            el.className = 'door-cont opened';
+            if (paramsObj.door == '1') {
+                localStorage.setItem('hexo_door_open_time', '');
+            }
+        }
+        window.openDoor = openDoor;
+        function initDoor() {
+            var ts = new Date().getTime();
+            var last = localStorage.getItem('hexo_door_open_time');
+            last = last && Number.parseInt(last);
+            // console.log('last opened', last);
+            var el = document.getElementById('hexoDoor');
+            if ((!isNaN(last) && ts - last > 1000 * 3600 * 24) || paramsObj.door == '1') {
+                el.className = 'door-cont';
+
+            } else {
+                el.remove();
+            }
+        }
+        initDoor();
+    }());
+</script>
+
 <div id="page">
 <div id="lx-aside" style="background-image: url(/images/cover.jpg)">
   <div class="overlay">
