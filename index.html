@@ -43,7 +43,7 @@
 </head>
 <body>
 
-<div id='hexoDoor' class='door-cont hide' onclick="openDoor();">
+<div id='hexoDoor' class='door-cont' onclick="openDoor();">
     <div class='door-left'></div>
     <div class='door-right'></div>
     <!-- <span class='door-key'>PUSH START</span> -->
@@ -57,13 +57,13 @@
             paramsObj[params[idx]] = params[idx + 1];
         }
         function openDoor() {
-            var ts = new Date().getTime();
-            localStorage.setItem('hexo_door_open_time', ts);
+            // var ts = new Date().getTime();
+            // localStorage.setItem('hexo_door_open_time', ts);
             var el = document.getElementById('hexoDoor');
             el.className = 'door-cont opened';
-            if (paramsObj.door == '1') {
-                localStorage.setItem('hexo_door_open_time', '');
-            }
+            // if (paramsObj.door == '1') {
+            //     localStorage.setItem('hexo_door_open_time', '');
+            // }
         }
         window.openDoor = openDoor;
         function initDoor() {
@@ -79,7 +79,7 @@
                 el.remove();
             }
         }
-        initDoor();
+        // initDoor();
     }());
 </script>
 
