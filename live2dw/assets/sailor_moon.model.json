@@ -2,7 +2,7 @@
 	"version":"Sample 1.0.0",
 	"model":"model.moc",
 	"textures":[
-		"images/texture_00"
+		"images/texture_00.png"
 	],
 	"expressions":[
 		{"name":"F00.exp.json","file":"expressions/F00.exp.json","eyeblink":"0","":""},
