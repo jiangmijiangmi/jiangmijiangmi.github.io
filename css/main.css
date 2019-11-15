@@ -1387,12 +1387,17 @@ blockquote div {
 .door-cont .door-key {
   width: 8rem;
   height: 6rem;
-  background-image: url("/images/linkstart01.gif");
   background-size: cover;
   font-size: 0;
   color: #fff;
   margin: auto;
   cursor: pointer;
+}
+.door-cont .door-img {
+  width: 8rem;
+}
+.door-cont.opened .door-img {
+  display: none;
 }
 @-moz-keyframes blink {
   0% {
