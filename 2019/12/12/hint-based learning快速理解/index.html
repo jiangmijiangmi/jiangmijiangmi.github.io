@@ -62,7 +62,13 @@
         <p>FITNETS: HINTS FOR THIN DEEP NETS</p>
 <p>这篇论文主要是研究如何在更深的学生网络上取得更好的效果。之前提出的知识蒸馏，是用比较小的学生模型来模仿比较大的老师模型的知识、信息、输出，在这里为了取得更好的表现，我们希望学生模型更大一点更深一点，更为了防止更深的网络在模仿时出错，我们不知考虑老师模型的最终输出，也考虑模仿中间层的输出，来指导学生模型的训练。</p>
 <p>只考虑单纯的知识转移的蒸馏过程，核心点是对softmax层的输入添加了温度参数。</p>
-<p>学生网络的输出<br>$$<br>P^{\tau}<em>S=softmax(\frac{a_S}{\tau})<br>$$<br>老师网络的软化输出（软标签）：<br>$$<br>P^{\tau}_S=softmax(\frac{a_S}{\tau})<br>$$<br>最终的损失函数是由两部分组成的，一个是学生输出和硬标签的差距，一个是学生输出和软标签的差距。<br>$$<br>L</em>{KD}(W_s)=H(y_{true},P_s)+\lambda H(P^{\tau}_T,P^{\tau}_S)<br>$$<br>$H$在这里是交叉熵损失，$\lambda$是平衡两个损失的权重。</p>
+<p>学生网络的输出</p>
+<p>$$<br>P^{\tau}_S=softmax(\frac{a_S}{\tau})<br>$$</p>
+<p>老师网络的软化输出（软标签）：</p>
+<p>$$<br>P^{\tau}_S=softmax(\frac{a_S}{\tau})<br>$$</p>
+<p>最终的损失函数是由两部分组成的，一个是学生输出和硬标签的差距，一个是学生输出和软标签的差距。</p>
+<p>$$<br>L_{KD}(W_s)=H(y_{true},P_s)+\lambda H(P^{\tau}_T,P^{\tau}_S)<br>$$</p>
+<p>$H$在这里是交叉熵损失，$\lambda$是平衡两个损失的权重。</p>
 <p>在面对比较深的学生模型时，引入了一个int的概念。A <em>hint</em> is defined as the output of a teacher’s hidden layer responsible for guiding the student’s learning process。hint指的是用来指导学生模型学习过程的老师模型的中间层的输出。在这里要考虑到的一点是，老师模型和学生模型的结构不一样，所以中间层的差距也会很大，比如说大小和通道数。所以为了让老师模型的hint层和学生模型的guided层相匹配，我们会在学生模型的guided层后面加一个回归层，使得两个输出的大小之类的保持一致。</p>
 <p>最终的损失函数是：<br>$$<br>L_{HT}(W_{Guided},W_r)=\frac{1}{2}｜u_h(x;W_{Hint})-r(v_g(x;W_{Guided});W_r)｜^2<br>$$<br>在这里$r$表示的就是我们加上去的回归层，$W_{hint}$和$W_{Guided}$分别是老师模型中的hint层和学生模型中的guided层的参数。$u_h$和$r$都是非线性的，并且两个的输出需要是可比的（这也是添加回归层的目的：可比）。</p>
 <p><strong>使用全连接层作为回归层会需要太多的参数并且有更多的内存和计算损耗，所以可以使用卷积层。</strong></p>
@@ -164,6 +170,36 @@
 <script src="/js/main.js"></script>
 
 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+  TeX: {
+          extensions: ["mhchem.js"]
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.5/latest.js?config=TeX-MML-AM_SVG"></script>
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":true,"debug":true,"model":{"jsonPath":"/live2dw/assets/sailor_moon.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script>
 </body>
