@@ -68,7 +68,7 @@
 <p><strong>使用全连接层作为回归层会需要太多的参数并且有更多的内存和计算损耗，所以可以使用卷积层。</strong></p>
 <p>在进行训练时，hint learning的部分和knowledge distillation的部分是分开的。首先是对学生模型的中间层参数进行训练，假设学生模型的初始参数是$W_S$，老师模型的初始参数是$W_T$，从开始到老师模型的hint层的参数为$W_{Hint}$，从开始到学生模型的guided层的参数为$W_{Guided}$。学生模型的guided层后面的回归层参数为$W_r$。第一部分训练目的是让guided层学习hint层，我们最小化hint层和回归层输出的差距，对guided层以及之前的层的参数进行调整，这就是学习老师模型的中间层的信息。</p>
 <p>在第一部分训练结束后，我们再在已经调整好的参数基础上，进行整体的蒸馏。</p>
-<p><img src="%E5%90%88%E6%88%90.png" alt="avatar"></p>
+<p><img src="/images/comp.png" alt="avatar"></p>
 <p>第一张图是整体的比较，第二张图代表着hint-learning，第三张图就是传统的知识蒸馏。图中的$W^∗_{Guided}$指的是经过调整后的guided层以及之前层的参数，其余的层的参数还是初始值，不需要再次进行更改。</p>
 <p>前面的没什么难理解的，最后翻译一下conclusion部分。</p>
 <blockquote>
