@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Hello World | 呱呱的奇幻冒险biubiu</title>
+  <title>hint-based learning快速理解 | 呱呱的奇幻冒险biubiu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="今天也是可爱呱呱">
   <meta name="keywords" content="">
@@ -48,8 +48,8 @@
   <div class="overlay">
   <div class="page-title">
     <div class="avatar"><a href="/"><img src="/images/person_1.jpg"></a></div>
-    <span>2019-11-13</span>
-    <h2>Hello World</h2>
+    <span>2019-12-12</span>
+    <h2>hint-based l...</h2>
     
     </div>
 </div>
@@ -59,19 +59,21 @@
   <div class="lx-post">
     <div class="lx-entry padding">
       <div>
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post11111111111"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <p>FITNETS: HINTS FOR THIN DEEP NETS</p>
+<p>这篇论文主要是研究如何在更深的学生网络上取得更好的效果。之前提出的知识蒸馏，是用比较小的学生模型来模仿比较大的老师模型的知识、信息、输出，在这里为了取得更好的表现，我们希望学生模型更大一点更深一点，更为了防止更深的网络在模仿时出错，我们不知考虑老师模型的最终输出，也考虑模仿中间层的输出，来指导学生模型的训练。</p>
+<p>只考虑单纯的知识转移的蒸馏过程，核心点是对softmax层的输入添加了温度参数。</p>
+<p>学生网络的输出<br>$$<br>P^{\tau}<em>S=softmax(\frac{a_S}{\tau})<br>$$<br>老师网络的软化输出（软标签）：<br>$$<br>P^{\tau}_S=softmax(\frac{a_S}{\tau})<br>$$<br>最终的损失函数是由两部分组成的，一个是学生输出和硬标签的差距，一个是学生输出和软标签的差距。<br>$$<br>L</em>{KD}(W_s)=H(y_{true},P_s)+\lambda H(P^{\tau}_T,P^{\tau}_S)<br>$$<br>$H$在这里是交叉熵损失，$\lambda$是平衡两个损失的权重。</p>
+<p>在面对比较深的学生模型时，引入了一个int的概念。A <em>hint</em> is defined as the output of a teacher’s hidden layer responsible for guiding the student’s learning process。hint指的是用来指导学生模型学习过程的老师模型的中间层的输出。在这里要考虑到的一点是，老师模型和学生模型的结构不一样，所以中间层的差距也会很大，比如说大小和通道数。所以为了让老师模型的hint层和学生模型的guided层相匹配，我们会在学生模型的guided层后面加一个回归层，使得两个输出的大小之类的保持一致。</p>
+<p>最终的损失函数是：<br>$$<br>L_{HT}(W_{Guided},W_r)=\frac{1}{2}｜u_h(x;W_{Hint})-r(v_g(x;W_{Guided});W_r)｜^2<br>$$<br>在这里$r$表示的就是我们加上去的回归层，$W_{hint}$和$W_{Guided}$分别是老师模型中的hint层和学生模型中的guided层的参数。$u_h$和$r$都是非线性的，并且两个的输出需要是可比的（这也是添加回归层的目的：可比）。</p>
+<p><strong>使用全连接层作为回归层会需要太多的参数并且有更多的内存和计算损耗，所以可以使用卷积层。</strong></p>
+<p>在进行训练时，hint learning的部分和knowledge distillation的部分是分开的。首先是对学生模型的中间层参数进行训练，假设学生模型的初始参数是$W_S$，老师模型的初始参数是$W_T$，从开始到老师模型的hint层的参数为$W_{Hint}$，从开始到学生模型的guided层的参数为$W_{Guided}$。学生模型的guided层后面的回归层参数为$W_r$。第一部分训练目的是让guided层学习hint层，我们最小化hint层和回归层输出的差距，对guided层以及之前的层的参数进行调整，这就是学习老师模型的中间层的信息。</p>
+<p>在第一部分训练结束后，我们再在已经调整好的参数基础上，进行整体的蒸馏。</p>
+<p><img src="%E5%90%88%E6%88%90.png" alt="avatar"></p>
+<p>第一张图是整体的比较，第二张图代表着hint-learning，第三张图就是传统的知识蒸馏。图中的$W^∗_{Guided}$指的是经过调整后的guided层以及之前层的参数，其余的层的参数还是初始值，不需要再次进行更改。</p>
+<p>前面的没什么难理解的，最后翻译一下conclusion部分。</p>
+<blockquote>
+<p>我们提出了一个新的可以将大而深的网络压缩成瘦而更深的网络的方法，也就是引入一个中间层hint来指导学生模型训练过程。我们能用这个方法来训练参数比较小的特别深的学生模型，这种模型泛化更好并且运行起来也比老师模型快。我们的实验表明用教师模型的中间层作为hint要比用分类结果作为hint效果好得多。我们在benchmark数据集上的结果表明啊能力不太强的深度网络也能提取出比拥有它10倍参数的网络能提取的更好的特征表达。我们的hint-based learning效果索命我们应该更努力的寻找新的训练策略来充分体用深度网络的能力。</p>
+</blockquote>
 
       </div>
     </div>
@@ -80,12 +82,12 @@
 <div class="lx-navigation">
 	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/footer_1.jpg)">
 		<div class="overlay"></div>
-		<a class="copy" href="/2019/12/12/hint-based%20learning%E5%BF%AB%E9%80%9F%E7%90%86%E8%A7%A3/">
+		<a class="copy" href="#">
 			<div class="display-t">
 				<div class="display-tc">
 					<div>
 						<span>Next</span>
-						<h3>hint-ba...</h3>
+						<h3>没有更新的文章</h3>
 					</div>
 				</div>
 			</div>
@@ -93,12 +95,12 @@
 	</div>
         <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/footer_2.jpg)">
 		<div class="overlay"></div>
-		<a class="copy" href="#">
+		<a class="copy" href="/2019/11/13/hello-world/">
 			<div class="display-t">
 				<div class="display-tc">
 					<div>
 						<span>Prev</span>
-						<h3>没有更早的文章</h3>
+						<h3>Hello W...</h3>
 					</div>
 				</div>
 			</div>
