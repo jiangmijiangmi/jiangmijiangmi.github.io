@@ -113,9 +113,10 @@ h2.category {
   position: fixed;
   height: 100%;
   z-index: 3;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat-x: repeat !important;
+  background-repeat-y: no-repeat !important;
 }
 .single #lx-aside {
   position: relative;

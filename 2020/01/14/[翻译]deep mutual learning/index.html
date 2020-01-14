@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>翻译:deep mutual learning | 呱呱的奇幻冒险biubiu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="今天也是可爱呱呱">
+  <meta name="keywords" content="">
+  <meta name="description" content="像桃子汽水一样噗噗噗噗冒气泡">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx2',
+    version: '0.0.0',
+    localsearch:{
+      "enable": false,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: '-'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "endless-river",
+	     });
+	}); 
+	</script>
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300|Noto+Serif+SC&amp;display=swap">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+</head>
+<body>
+<div class="single">
+<div id="page">
+<div id="lx-aside" style="background-image: url(/images/page-cover.jpg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/person_1.jpg"></a></div>
+    <span>2020-01-14</span>
+    <h2>翻译:deep mutual learning</h2>
+    
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <p>摘要</p>
+<p>模型蒸馏是一个有效的且广泛使用的可以在老师网络和学生网络间传递知识的技术。典型的应用模式是从一个效果拔群的大网络或者集成传递知识到小网络，这种更适合于内存较少或者需要快速执行的情况。在这个论文中，我们提出了一个深度相互学习（DML）策略，不像在预设的老师和学生间传递知识，而是一堆学生的集成一起进行学习，并在训练过程中相互指导。我们的实验证明网络结构可以在相互学习中受益，并且在CIFAR-100和Market-1501的实验上都有很棒的结果。令人惊讶的是，学生网络的相互学习效果就很好，甚至比从老师那里进行蒸馏的效果还要好。</p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>深度神经网络在很多问题上都有出色的表现，但是这些模型通常很深或者很宽，包含了大量的参数，所以就导致了一个可能的缺点：他们执行起来会很慢或者会很占用内存，从而限制了他们在某些平台或者应用上的使用。这个问题引起了在更快更小模型上的广泛研究。目前已经有很多实现又小又快速的模型的方法比如剪枝、模型压缩、二值化和最有趣的模型蒸馏。</p>
+<p>基于蒸馏的模型压缩来源于观察：小的网络和大的网络也会有一样的表达能力。但是和大网络相比，他们会更难训练和找到正确的能够实现目标函数的参数。这样看来，这个限制其实在于优化的困难而不是网络的大小。为了更好的学习一个小网络，蒸馏方法从一个强的老师模型开始，然后训练一个小一点的学生模型来模仿老师。模仿老师的类概率或者特征表达，传递传统的监督学习目标以外的信息。学习模仿老师的优化问题被证明是比直接学习目标函数要简单的，学生模型虽然小，但它的表现可以持平甚至超越大的老师模型。</p>
+<p>在这篇论文中，我们探究了一个不同但却和知识蒸馏相似的idea。蒸馏是从一个强大的的预训练的老师网络开始，然后对一个小的未训练的学生模型进行知识传递。相反的，在相互学习中，我们从一堆未训练的学生模型开始，这些模型会同时学习来一起解决问题。具体来说，每个学生模型训练时都有两个损失：一个传统的监督学习损失，一个可以使学生模型的类概率和其他学生模型的类概率保持一致的模仿损失。按这样训练，我们发现在结伴教学场景下的学生模型学习的效果比在传统监督学习场景下单独学习的效果要好。并且这样训练的学生模型会比通过传统蒸馏训练的学生模型效果更好。此外，对蒸馏的传统理解中要求老师模型比学生模型大且强，在很多情况下，大模型的相互学习也会取得表现上的提升。</p>
+<p>为什么这样的方法会起作用呢，原因似乎一点也不明显。额外的信息是从哪里来的，学习步骤是什么时候开始的，为什么它会收敛到一个很好的结果而不是被集体思想束缚“瞎子领导瞎子”。可以从以下来考虑：每个学生都是被一个传统的监督学习损失指导的，所以它们的表现会逐渐提升，并且不能成为集体思维的一员。监督学习中，所有的网络会为每个训练案例预测一样的标签，但是既然每个网络都是从不同的初始条件开始的，它们对下一个最有可能的类别的预测概率会是有差别的。就是这些次要的量在知识蒸馏中提供了额外的信息，同时也适用于互相学习。在互相学习中，学生成员有效地汇集了它们对下一个可能的类别的预测。根据对应的学习伙伴为每个训练样例发现和匹配其他最可能的类别可以增加每个学生模型的后验熵，这能帮助他们收敛成一个更稳健的最小值，并且在测试数据上有更好的泛化。这与最近关于深度学习后验熵的稳健性问题有关，但是比blind entropy regularisation的选择更好。</p>
+<p>总的来说，互相学习提供了一个简单且有效的方法来提高一个网络的泛化能力，即协作性地和别的成员一起训练。同使用了预训练的大网络的蒸馏方法相比，和伙伴一起协作学习能实现更好的表现。并且我们观察到：</p>
+<ol>
+<li>效果会随着成员网络的数量增加</li>
+<li>它能应用到许多不同的网络结构中，成员网络也可以包含各种大大小小的网络。</li>
+<li>在成员中互相训练的大网络也比单独训练的网络效果要好。</li>
+<li>我们的关注在于获得一个单独的有效的网络，那么整个成员编队可以看作一个有效的集成网络。</li>
+</ol>
+<p><strong>相关工作</strong></p>
+<p>基于蒸馏的模型压缩方法大概十年前就提出了，但是最近才重新变得活跃，关于为什么它会起作用的观点也早就提出来啦。起初，一个常见的应用是把大模型的函数蒸馏到小的学生模型中。之后这个想法被应用到将容易训练的网络蒸馏到一个不容易训练的小网络。最近，蒸馏开始更系统性地和信息学习理论和SVM+相接。我们不需要老师的存在，允许学习在互相蒸馏中指导对方。</p>
+<p>另一些相关的ideas包括dual learning，两个交叉语言翻译模型交互性地指导彼此。但是这个只在专门的翻译问题上有应用。相反的，我们的互相学习方法可以应用到一般的分类问题上。集成优于多样，我们的互相学习策略可以减少多样性，使得所有学生在模仿彼此时都或多或少变得相似。然而我们的目标不只是产生一个多样的集成，而是让网络能找到泛化很好的结果，而这是在传统的监督学习中比较难找到的。</p>
+<h1 id="Deep-Mutual-Learning"><a href="#Deep-Mutual-Learning" class="headerlink" title="Deep Mutual Learning"></a>Deep Mutual Learning</h1><p>##Formulation</p>
+<p>我们首先用一个两个模型的编队构建了这个DML方法。扩展到多个网络的过程也很直接。给了来自$M$个类别的$N$个样本$X={x_i}^N_{i=1}$。我们定义对应的标签集$Y={y_i}^N_{i=1}$。每个样本$x_i$的属于分类$m$的概率可以由神经网络$\Theta_1$计算：<br>$$<br>p^m_1(x_i)=\frac{\exp(z^m_1)}{\sum^M_{m=1}\exp(z^m_1)}<br>$$<br>这里的logits$z^m$是神经网络$\Theta_1$的softmax层的输出。</p>
+<p>对多类别分类，用来训练神经网络$\Theta_1$的目标函数被定义为预测值和正确标签的交叉熵损失。<br>$$<br>L_{C_1}=-\sum^N_{i=1}\sum^M_{m=1}I(y_i,m)\log(p^m_1(x_i))<br>$$</p>
+<p>传统的监督损失训练网络为训练样例预测正确的标签。为了提高神经网络$\Theta_1$的泛化表现，我们使用另一个伙伴网络$\Theta_2$来以它的后验概率$p_2$的形式提供训练经验。为了衡量两个网络的预测$p_1$和$p_2$的匹配度，我们使用了KL散度。<br>$$<br>D_{KL}(p_2||p_1)=\sum^N_{i=1}\sum^M_{m=1}p^m_2(x_i)\log\frac{p^m_2(x_i)}{p^m_1(x_i)}<br>$$<br>神经网络$\Theta_1$的损失函数$L_{\Theta_1}$被定义为：<br>$$<br>L_{\Theta_1}=L_{C_1}+D_{KL}(p_2||p_1)<br>$$<br>神经网络$\Theta_2$的损失函数$L_{\Theta_2}$被定义为：<br>$$<br>L_{\Theta2}=L_{C_2}+D_{KL}(p_1||p_2)<br>$$<br>按照这个方法，每个神经网络都能学习到预测训练样例的真实标签同时和它的伙伴的概率预测结果匹配。</p>
+<h2 id="Optimisation"><a href="#Optimisation" class="headerlink" title="Optimisation"></a>Optimisation</h2><p>互相学习是在每个基于小批量模型更新步骤和整个训练过程中执行的。在每个迭代中，我们计算了两个模型的预测并且更新两个模型的参数。对$\Theta_1$和$\Theta_2$的优化是迭代地进行的直到收敛。优化细节在算法1中总结。</p>
+<hr>
+<p><strong>Algorthm 1: Deep Mutula Learning</strong>|</p>
+<p><strong>Input：</strong>|训练集合$X$，标签集$Y$，学习率$\gamma_{1,t}$$\gamma_{2,t}$</p>
+<p><strong>Initialize:</strong>｜模型$\Theta_1$和模型$\Theta_2$</p>
+<p><strong>Repeat:</strong>|</p>
+<p>t=t+1</p>
+<p>从训练集$X$中随机选择数据$x$。</p>
+<ol>
+<li><p>对预测结果$p_1$和$p_2$进行更新</p>
+</li>
+<li><p>计算随机梯度更新$\Theta_1$<br>$$<br>\Theta_1\longleftarrow\Theta_1+\gamma_{1,t}\frac{\partial L_{\Theta_1}}{\partial\Theta_1}<br>$$</p>
+</li>
+<li><p>对预测结果$p_1$和$p_2$进行更新</p>
+</li>
+<li><p>计算随机梯度更新$\Theta_2$<br>$$<br>\Theta_2\longleftarrow\Theta_2+\gamma_{2,t}\frac{\partial L_{\Theta_2}}{\partial\Theta_2}<br>$$</p>
+</li>
+</ol>
+<p><strong>Until:</strong>｜收敛</p>
+<h2 id="Extension-to-Larger-Student-Cohorts"><a href="#Extension-to-Larger-Student-Cohorts" class="headerlink" title="Extension to Larger Student Cohorts"></a>Extension to Larger Student Cohorts</h2><p>提出的DML方法可以扩展到更多的网络上，给出$K$个网络$\Theta_1,\Theta_2,…,\Theta_K(K&gt;=2)$，用来优化神经网络$\Theta_k$的目标函数变为：<br>$$<br>L_{\Theta_k}=L_{C_k}+\frac{1}{K-1}\sum^k_{l=1,l\ne k}D_{KL}(p_l||p_k)<br>$$<br>这个说明在K个网络的时候，每个学生的DML有效地将编队中剩下的$K-1$个网络作为老师来提供学习经验。注意我们已经加进去了一个系数来保证监督学习仍起着主要的指导作用。DML的对两个以上网络的优化过程就是算法1的直接扩展版。它可以在每个设备上学习每个网络然后在设备间传递小的概率向量。</p>
+<p>在小网络超过两个情况下，一个候补学习方法是把其他$K-1$个网络作为一个集成来提供平均的学习经验，这和蒸馏非常的相似但是在每个批更新都进行。$\Theta_k$的目标函数可以被写为：<br>$$<br>L_{\Theta_k}=L_{C_k}+D_{KL}(p_{avg}||p_k), p_{avg}=\frac{1}{K-1}\sum^K_{l=1,l\ne k}p_t<br>$$<br>在我们的实验中，我们发现只使用一个集成老师的DML会比使用$K-1$个老师的DML模型表现差。这是因为用来构建老师集成模型的模型平均步骤会让老师的后验概率在真实类别上达到高峰，因此减少了后验熵。这和DML的“产生具有高后验熵的稳健方法”的目的是相互矛盾的。</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(/images/footer_1.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>没有更新的文章</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(/images/footer_2.jpg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2019/12/12/hint-based%20learning%E5%BF%AB%E9%80%9F%E7%90%86%E8%A7%A3/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>hint-ba...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+
+<footer>
+  <div>
+  Copyright &copy; 2019.<a href="/">呱呱的奇幻冒险biubiu</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.blleng.cn" target="_blank">Lx</a><br>
+  </div>
+</footer>
+</div>
+
+<button class="menu-trigger"></button>
+<div class="menu">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/person_1.jpg" alt="今天也是可爱呱呱"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>今天也是可爱呱呱</p>
+          <span class="tagline">像桃子汽水一样噗噗噗噗冒气泡!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>首页</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>页面</span>
+        <ul>
+          <li><a href="/guestbook">留言</a></li>
+        <li><a href="/about">关于</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>友链</span>
+        <ul>
+          <li> <a href="https://lx.blleng.cn" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+  TeX: {
+          extensions: ["mhchem.js"]
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.5/latest.js?config=TeX-MML-AM_SVG"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":true,"debug":true,"model":{"jsonPath":"/live2dw/assets/sailor_moon.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script>
+</body>
+</html>
